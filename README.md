@@ -1,4 +1,5 @@
-[![](http://jenkins.imagej.net/job/ImageJ/lastBuild/badge/icon)](http://jenkins.imagej.net/job/ImageJ/)
+[![Image.sc forum](https://img.shields.io/badge/dynamic/json.svg?label=forum&url=https%3A%2F%2Fforum.image.sc%2Ftags%2Fimagej.json&query=%24.topic_list.tags.0.topic_count&colorB=brightgreen&suffix=%20topics&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABPklEQVR42m3SyyqFURTA8Y2BER0TDyExZ+aSPIKUlPIITFzKeQWXwhBlQrmFgUzMMFLKZeguBu5y+//17dP3nc5vuPdee6299gohUYYaDGOyyACq4JmQVoFujOMR77hNfOAGM+hBOQqB9TjHD36xhAa04RCuuXeKOvwHVWIKL9jCK2bRiV284QgL8MwEjAneeo9VNOEaBhzALGtoRy02cIcWhE34jj5YxgW+E5Z4iTPkMYpPLCNY3hdOYEfNbKYdmNngZ1jyEzw7h7AIb3fRTQ95OAZ6yQpGYHMMtOTgouktYwxuXsHgWLLl+4x++Kx1FJrjLTagA77bTPvYgw1rRqY56e+w7GNYsqX6JfPwi7aR+Y5SA+BXtKIRfkfJAYgj14tpOF6+I46c4/cAM3UhM3JxyKsxiOIhH0IO6SH/A1Kb1WBeUjbkAAAAAElFTkSuQmCC)](https://forum.image.sc/tags/imagej)
+[![](https://travis-ci.org/imagej/imagej.svg?branch=master)](https://travis-ci.org/imagej/imagej)
 [![Join the chat at https://gitter.im/imagej/imagej](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/imagej/imagej?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ImageJ2 is a new version of [ImageJ](http://imagej.net/) seeking to strengthen
@@ -9,7 +10,7 @@ features a user interface closely modeled after the original.
 Under the hood, ImageJ2 completely isolates the image processing logic from the
 graphical user interface (UI), allowing ImageJ2 commands to be used in many
 contexts, including headless in the cloud or on a server such as
-[OMERO](http://openmicroscopy.org/site/support/omero4), or from within another
+[OMERO](http://openmicroscopy.org/site/support/omero), or from within another
 application such as [KNIME](http://knime.org/),
 [Icy](http://icy.bioimageanalysis.org/) or
 [CellProfiler](http://cellprofiler.org/) (a Python application).
@@ -27,22 +28,10 @@ We are collaborating closely with related projects including
 software stack reusable throughout the life sciences community and beyond. For
 more details, see the [SciJava web site](http://scijava.org/).
 
-ImageJ2 is currently in the "beta" stage, meaning the code is not finished. It
-is being released for early community feedback and testing. Comments, questions
-and bug reports are much appreciated!
-
-To maintain ImageJ's continuity of development, we have modeled the application
-after ImageJ v1.x as much as is reasonable. However, please be aware that
-ImageJ2 is essentially a total rewrite of ImageJ from the ground up. It
-provides backward compatibility with older versions of ImageJ by bundling the
-latest v1.x code and translating between "legacy" and "modern" image
-structures.
-
 For more details on the project, see the [ImageJ web site](http://imagej.net/).
 
 
-LICENSING
----------
+# LICENSING
 
 ImageJ2 is distributed under a
 [Simplified BSD License](http://en.wikipedia.org/wiki/BSD_licenses);
@@ -53,8 +42,9 @@ For the list of developers and contributors, see
 [the parent POM](https://github.com/imagej/pom-imagej/blob/master/pom.xml).
 
 
-IMAGEJ AS A LIBRARY
--------------------
+# IMAGEJ AS A LIBRARY
+
+## From Java
 
 This repository is the master ImageJ application, which brings together all of
 ImageJ under the artifact
@@ -64,9 +54,9 @@ your own software. E.g., in your Maven `pom.xml`:
 
 ```
 <parent>
-  <groupId>net.imagej</groupId>
-  <artifactId>pom-imagej</artifactId>
-  <version>2.35</version>
+  <groupId>org.scijava</groupId>
+  <artifactId>pom-scijava</artifactId>
+  <version>16.2.0</version>
 </parent>
 ...
 <dependency>
@@ -76,13 +66,28 @@ your own software. E.g., in your Maven `pom.xml`:
 ```
 
 We recommend inheriting from the
-[pom-imagej](https://github.com/imagej/pom-imagej) parent, although it is not
+[pom-scijava](https://github.com/scijava/pom-scijava) parent, although it is not
 required. (If you do not, you will need to include the `<version>` of ImageJ in
 your `<dependency>` declaration.)
 
+## From other languages
 
-DEPENDENCIES
-------------
+* __JavaScript__: Use the
+  [imagej module on npm](https://www.npmjs.com/package/imagej)
+  to call ImageJ in-process from node.js code.
+* __Python__: Use the
+  [imagej module on pypi](https://pypi.org/project/imagej/)
+  to call ImageJ in-process or interprocess from Python code.
+* __Ruby, R, LLVM and beyond__: Use [GraalVM](https://www.graalvm.org/)
+  to combine ImageJ with Truffle-based languages in the same VM,
+  with shared objects and memory on a single VM heap.
+* __Interprocess__: Use the
+  [ImageJ Server](https://github.com/imagej/imagej-server)
+  to work with ImageJ via a RESTful web services API, between
+  processes on the same machine, or between multiple machines.
+
+
+# DEPENDENCIES
 
 This component depends on other, lower level components, each of which lives in
 its own repository:
@@ -101,21 +106,15 @@ It also includes various "plugin" components at runtime:
 * [ImageJ Plugins: Tools](https://github.com/imagej/imagej-plugins-tools)
 * [ImageJ Plugins: Uploader: SSH](https://github.com/imagej/imagej-plugins-uploader-ssh)
 * [ImageJ Plugins: Uploader: WebDAV](https://github.com/imagej/imagej-plugins-uploader-webdav)
+* [ImageJ Scripting](https://github.com/imagej/imagej-scripting)
 * [SciJava Plugins: Platforms](https://github.com/scijava/scijava-plugins-platforms)
 * [SciJava Plugins: Text: Markdown](https://github.com/scijava/scijava-plugins-text-markdown)
 * [SciJava Plugins: Text: Plain](https://github.com/scijava/scijava-plugins-text-plain)
-* [Scripting: Beanshell](https://github.com/scijava/scripting-beanshell)
-* [Scripting: Clojure](https://github.com/scijava/scripting-clojure)
-* [Scripting: Java](https://github.com/scijava/scripting-java)
-* [Scripting: JavaScript](https://github.com/scijava/scripting-javascript)
-* [Scripting: JRuby](https://github.com/scijava/scripting-jruby)
-* [Scripting: Jython](https://github.com/scijava/scripting-jython)
 
 See the [pom.xml](pom.xml) for a complete list of dependencies.
 
 
-BUGS
-----
+# BUGS
 
 For a list of known issues, see the
 [GitHub issues](https://github.com/imagej/imagej/issues).

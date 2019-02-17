@@ -31,6 +31,9 @@
 
 package net.imagej;
 
+import io.scif.SCIFIO;
+import io.scif.SCIFIOService;
+
 import net.imagej.animation.AnimationService;
 import net.imagej.app.ImageJApp;
 import net.imagej.display.ImageDisplayService;
@@ -38,6 +41,7 @@ import net.imagej.display.OverlayService;
 import net.imagej.display.ScreenCaptureService;
 import net.imagej.display.WindowService;
 import net.imagej.lut.LUTService;
+import net.imagej.notebook.NotebookService;
 import net.imagej.ops.OpService;
 import net.imagej.render.RenderingService;
 import net.imagej.sampler.SamplerService;
@@ -49,9 +53,6 @@ import org.scijava.Context;
 import org.scijava.Gateway;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.SciJavaService;
-
-import io.scif.SCIFIO;
-import io.scif.SCIFIOService;
 
 /**
  * Main entry point into ImageJ. This class enables working with ImageJ services
@@ -133,6 +134,15 @@ public class ImageJ extends AbstractGateway {
 	}
 
 	/**
+	 * Gets this application context's {@link NotebookService}.
+	 *
+	 * @return The {@link NotebookService} of this application context.
+	 */
+	public NotebookService notebook() {
+		return get(NotebookService.class);
+	}
+
+	/**
 	 * Gets this application context's {@link OpService}.
 	 *
 	 * @return The {@link OpService} of this application context.
@@ -204,4 +214,10 @@ public class ImageJ extends AbstractGateway {
 		return get(WindowService.class);
 	}
 
+	// -- Gateway methods --
+
+	@Override
+	public String getShortName() {
+		return "ij";
+	}
 }
